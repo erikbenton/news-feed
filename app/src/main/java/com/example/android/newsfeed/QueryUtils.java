@@ -49,8 +49,10 @@ public class QueryUtils
             // Turn JSON string in JSON object
             JSONObject articlesJsonObject = new JSONObject(articlesJson);
 
+            JSONObject responseJsonObject = articlesJsonObject.getJSONObject("response");
+
             // Then get array of articles from the object
-            JSONArray articleJsonArray = articlesJsonObject.getJSONArray("results");
+            JSONArray articleJsonArray = responseJsonObject.getJSONArray("results");
 
             // Extract whats needed from each entry in array
             for(int i = 0; i < articleJsonArray.length(); i++)
