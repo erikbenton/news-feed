@@ -8,13 +8,12 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="DateStyle">
+    <style name="SectionStyle">
         <item name="android:paddingTop">8dp</item>
         <item name="android:paddingLeft">4dp</item>
         <item name="android:paddingRight">4dp</item>
         <item name="android:textColor">@android:color/darker_gray</item>
         <item name="android:layout_gravity">center</item>
-        <item name="android:textAlignment">center</item>
         <item name="android:textSize">12sp</item>
     </style>
 
