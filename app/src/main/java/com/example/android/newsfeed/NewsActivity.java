@@ -4,15 +4,19 @@ import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +33,7 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
     private static final int NEWS_ARTICLE_ID = 1;
 
     // Hardcoded JSON response
-    private String NEWS_URL = "http://content.guardianapis.com/search?q=debates&api-key=";
+    private static final String NEWS_URL = "http://content.guardianapis.com/search?";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -83,6 +87,11 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
         return true;
     }
 
+    /**
+     * When an item in the options area of the app bar is selected -> choose what to do
+     * @param item - Item that is clicked on
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
@@ -106,7 +115,7 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
     }
 
     /**
-     * Creates a News Loader
+     * Creates the URL for the query and creates a News Loader
      * @param id - ID of the loader
      * @param args
      * @return Loader with the List of News Articles
@@ -114,7 +123,37 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
     @Override
     public Loader<List<NewsArticle>> onCreateLoader(int id, Bundle args)
     {
-        return new NewsLoader(this, NEWS_URL + getString(R.string.API_KEY));
+        // First, fill the shared preferences with the defaults
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // Get the search settings
+        String searchSection = sharedPrefs.getString
+                (
+                    getString(R.string.settings_section_key),
+                    getString(R.string.settings_section_default)
+                );
+
+        // Build URI to search with
+        //Create base URI
+        Uri baseUri = Uri.parse(NEWS_URL);
+
+        // Create Uri builder
+        Uri.Builder uriBuilder = baseUri.buildUpon();
+
+        // If there is something entered for Search Section
+        if(!searchSection.equals(""))
+        {
+            // Add that to the query
+            uriBuilder.appendQueryParameter("section", searchSection);
+        }
+
+        // Add the query to the search
+        uriBuilder.appendQueryParameter("q", "trump");
+
+        // Add the API Key
+        uriBuilder.appendQueryParameter("api-key", getString(R.string.API_KEY));
+
+        return new NewsLoader(this, uriBuilder.toString());
     }
 
     /**
