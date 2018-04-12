@@ -2,6 +2,7 @@ package com.example.android.newsfeed;
 
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Context;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
@@ -11,11 +12,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -28,6 +35,12 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
 
     // Adapter for the News Articles
     private NewsAdapter mAdapter;
+
+    // Query input
+    private EditText mQueryInput;
+
+    // Query Button
+    private Button mQueryButton;
 
     // Loader for the News Articles
     private LoaderManager mLoaderManager;
@@ -51,6 +64,33 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
         // Set adapter for the ListView
         mListView.setAdapter(mAdapter);
 
+        // Query views
+        mQueryInput = findViewById(R.id.query_field);
+        mQueryButton = findViewById(R.id.query_button);
+
+        mQueryInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_SEARCH)
+                {
+                    performQuery();
+                    handled = true;
+                }
+                return handled;
+            }
+        });
+
+        // Set a click listener for when "Search" is clicked
+        mQueryButton.setOnClickListener(new Button.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                performQuery();
+            }
+        });
+
         // Set it so that a click on an item goes to that article
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
@@ -72,6 +112,30 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
 
         mLoaderManager = getLoaderManager();
         mLoaderManager.initLoader(NEWS_ARTICLE_ID, null, this);
+    }
+
+    /**
+     * Performs the query for the JSON data
+     */
+    private void performQuery()
+    {
+        // Hide the EmptyView
+        //mEmptyView.setVisibility(View.GONE);
+
+        //Show ProgressBar
+        //mProgressBar.setVisibility(View.VISIBLE);
+
+        // Clears focus from the EditText View
+        mQueryInput.clearFocus();
+
+        // Manager for handling the input
+        InputMethodManager in = (InputMethodManager)NewsActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        // Hides the keyboard
+        in.hideSoftInputFromWindow(mQueryInput.getWindowToken(), 0);
+
+        // Init the loader
+        mLoaderManager.restartLoader(NEWS_ARTICLE_ID, null, NewsActivity.this);
     }
 
     /**
@@ -163,8 +227,11 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
             uriBuilder.appendQueryParameter("tag", searchTag.trim());
         }
 
+        // Get query
+        String query = mQueryInput.getText().toString();
+
         // Add the query to the search
-        uriBuilder.appendQueryParameter("q", "trump");
+        uriBuilder.appendQueryParameter("q", query);
 
         // Add the API Key
         uriBuilder.appendQueryParameter("api-key", getString(R.string.API_KEY));

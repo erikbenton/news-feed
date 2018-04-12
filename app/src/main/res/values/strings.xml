@@ -5,6 +5,9 @@
     <string name="settings_menu_items">Settings</string>
     <string name="settings_title">Search Settings</string>
 
+    <!-- Query Text -->
+    <string name="query_button_text">Search</string>
+
     <!-- Settings for Section Preference -->
     <string name="settings_section_label">Search Section</string>
     <string name="settings_section_key" translatable="false">section_pref</string>
