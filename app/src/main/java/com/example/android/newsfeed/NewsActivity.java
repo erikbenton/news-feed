@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -133,6 +134,13 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
                     getString(R.string.settings_section_default)
                 );
 
+        // Get the search settings
+        String searchTag = sharedPrefs.getString
+                (
+                        getString(R.string.settings_tag_key),
+                        getString(R.string.settings_tag_default)
+                );
+
         // Build URI to search with
         //Create base URI
         Uri baseUri = Uri.parse(NEWS_URL);
@@ -144,7 +152,15 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
         if(!searchSection.equals(""))
         {
             // Add that to the query
-            uriBuilder.appendQueryParameter("section", searchSection);
+            uriBuilder.appendQueryParameter("section", searchSection.trim());
+        }
+
+        // If there is something entered for Search Section
+        if(!searchTag.equals(""))
+        {
+            searchTag = TextUtils.join("/", searchTag.trim().split("/"));
+            // Add that to the query
+            uriBuilder.appendQueryParameter("tag", searchTag.trim());
         }
 
         // Add the query to the search
@@ -152,6 +168,9 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
 
         // Add the API Key
         uriBuilder.appendQueryParameter("api-key", getString(R.string.API_KEY));
+
+        // Log the query URI
+        Log.v("QUERY URL", uriBuilder.toString());
 
         return new NewsLoader(this, uriBuilder.toString());
     }

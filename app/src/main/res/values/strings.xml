@@ -9,4 +9,9 @@
     <string name="settings_section_label">Search Section</string>
     <string name="settings_section_key" translatable="false">section_pref</string>
     <string name="settings_section_default" translatable="false"></string>
+
+    <!-- Settings for Tag Preference -->
+    <string name="settings_tag_label">Search Tag</string>
+    <string name="settings_tag_key" translatable="false">tag_pref</string>
+    <string name="settings_tag_default" translatable="false"></string>
 </resources>
