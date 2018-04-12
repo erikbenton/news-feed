@@ -7,6 +7,8 @@ import android.content.Loader;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -25,7 +27,6 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
     // Loader for the News Articles
     private LoaderManager mLoaderManager;
     private static final int NEWS_ARTICLE_ID = 1;
-
 
     // Hardcoded JSON response
     private String NEWS_URL = "http://content.guardianapis.com/search?q=debates&api-key=";
@@ -66,6 +67,42 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
 
         mLoaderManager = getLoaderManager();
         mLoaderManager.initLoader(NEWS_ARTICLE_ID, null, this);
+    }
+
+    /**
+     * When options menu is created, the menu is inflated
+     * and ready to be filled
+     * @param menu - Menu with search options
+     * @return Boolean for when it completes
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        // Inflates the main menu layout
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        // Get the ID of the selected options item
+        int id = item.getItemId();
+
+        // If the id is that for the action_settings
+        // then start that activity
+        if(id == R.id.action_settings)
+        {
+            // Make intent for opening the settings in the app
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+
+            // Start that activity
+            startActivity(settingsIntent);
+
+            //return true to mark done
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /**
