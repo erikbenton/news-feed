@@ -17,6 +17,17 @@ public class SettingsActivity extends AppCompatActivity
 
     public static class SearchPreferenceFragment extends PreferenceFragment
     {
+        /**
+         * Creates a fragment for when the settings icon is clicked on
+         * @param savedInstanceState
+         */
+        @Override
+        public void onCreate(@Nullable Bundle savedInstanceState)
+        {
+            super.onCreate(savedInstanceState);
 
+            // Add on the preferences created in the XML
+            addPreferencesFromResource(R.xml.settings_main);
+        }
     }
 }
