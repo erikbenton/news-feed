@@ -205,6 +205,13 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
                         getString(R.string.settings_tag_default)
                 );
 
+        // Get the order by preference
+        String orderBy = sharedPrefs.getString
+                (
+                    getString(R.string.settings_order_by_key),
+                    getString(R.string.settings_order_by_default)
+                );
+
         // Build URI to search with
         //Create base URI
         Uri baseUri = Uri.parse(NEWS_URL);
@@ -225,6 +232,12 @@ public class NewsActivity extends AppCompatActivity implements LoaderCallbacks<L
             searchTag = TextUtils.join("/", searchTag.trim().split("/"));
             // Add that to the query
             uriBuilder.appendQueryParameter("tag", searchTag.trim());
+        }
+
+        if(!orderBy.equals("none"))
+        {
+            // Add that to the query
+            uriBuilder.appendQueryParameter("order-by", orderBy);
         }
 
         // Get query

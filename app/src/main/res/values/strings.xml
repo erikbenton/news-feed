@@ -17,4 +17,18 @@
     <string name="settings_tag_label">Search Tag</string>
     <string name="settings_tag_key" translatable="false">tag_pref</string>
     <string name="settings_tag_default" translatable="false"></string>
+
+    <!-- Settings for Order By -->
+    <string name="settings_order_by_label">Order by</string>
+    <string name="settings_order_by_key" translatable="false">order_by</string>
+    <string name="settings_order_by_default" translatable="false">@string/settings_order_by_none_value</string>
+    <string name="settings_order_by_newest_label">Newest</string>
+    <string name="settings_order_by_newest_value" translatable="false">newest</string>
+    <string name="settings_order_by_oldest_label">Oldest</string>
+    <string name="settings_order_by_oldest_value" translatable="false">oldest</string>
+    <string name="settings_order_by_relevance_label">Relevance</string>
+    <string name="settings_order_by_relevance_value" translatable="false">relevance</string>
+    <string name="settings_order_by_none_label">None</string>
+    <string name="settings_order_by_none_value" translatable="false">none</string>
+
 </resources>
