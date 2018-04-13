@@ -9,17 +9,17 @@
     <TextView
         android:id="@+id/section_view"
         style="@style/SectionStyle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
         tools:text="Politics"/>
 
     <TextView
         android:id="@+id/title_view"
         style="@style/TitleStyle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="4"
+        android:layout_width="260dp"
+        android:layout_height="match_parent"
         tools:text="Universities are part of the solution to dysfunctional Brexit debates"/>
 
 </LinearLayout>
